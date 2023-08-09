@@ -1,0 +1,18 @@
+Problem: Akka application will fail at startup with the following complain:
+
+    [Fatal][05:41:37.037] System.ArgumentException
+    Unknown LogLevel: "". Valid values are: "DEBUG", "INFO", "WARNING", "ERROR" (Parameter 'logLevel')
+       at Akka.Event.Logging.LogLevelFor(String logLevel)
+       at Akka.Event.LoggingBus.StartDefaultLoggers(ActorSystemImpl system)
+       at Akka.Actor.LocalActorRefProvider.Init(ActorSystemImpl system)
+       at Akka.Actor.Internal.ActorSystemImpl.Start()
+       at Akka.Actor.ActorSystem.CreateAndStartSystem(String name, Config withFallback, ActorSystemSetup setup)
+
+Solution: When setting up Akka using AkkaConfigurationBuilder, the following has to be set explicitly. 
+
+    ConfigureLoggers(setup =>
+    {
+        setup.AddLogger<SerilogLogger>();
+    })
+
+Even though we expect that the default logging would just work with Serilog but that's not the case.
