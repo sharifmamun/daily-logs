@@ -1,4 +1,4 @@
-Problem: Akka application will fail at startup with the following complain:
+Problem: Akka application will fail at startup with the following stack trace:
 
     [Fatal][05:41:37.037] System.ArgumentException
     Unknown LogLevel: "". Valid values are: "DEBUG", "INFO", "WARNING", "ERROR" (Parameter 'logLevel')
