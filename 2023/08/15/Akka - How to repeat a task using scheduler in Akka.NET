@@ -1,0 +1,26 @@
+In Akka/Akka.NET, there is Scheduler to schedule sending repeated message. For more: https://getakka.net/articles/actors/schedulers.html. Here's an example:
+
+If I have something like below:
+        Receive<DoSomething>(d =>
+        {
+            Task.Run(async () => await StartSomething(d, _cts.Token), _cts.Token).PipeTo(Self);
+
+            Become(Working);
+        });
+
+Now, if I want to schedule the same thing for a repeated task say for 10 times, using Akka.NET Scheduler, we can easily achieve that like below:
+
+        Receive<DoSomething>(d =>
+        {
+            for(var i = 0; i < 10; i++)
+            {
+                Context.System.Scheduler.ScheduleTellOnce(
+                    TimeSpan.FromSeconds(1),
+                    Self,
+                    Task.Run(async () => 
+                        await StartSomething(d, _cts.Token), _cts.Token).PipeTo(Self),
+                    ActorRefs.Nobody);
+            }
+            
+            Become(Working);
+        });
