@@ -1,0 +1,5 @@
+Multiple versions were introduced in PATH env variables in Windows system. When a bash script was run from BASH terminal in Windows, the eksctl was being used was an older one.
+
+This was blocking AWS cluster upgrade. What helped? In terminal, following command unblocked me:
+
+      which eksctl
